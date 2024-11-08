@@ -70,9 +70,13 @@ def main():
     summarize_script = script_root/'scripts/summarize.py'
     infotable = script_root/'db_file/vhdb_info.csv'
     bowtie2_index = script_root/'bowtie2_index/vhdb_vert_ani90rep'
+    snakefile = script_root/'Snakefile'
+    
+    
     
     snakemake_runcommand = ' '.join([
         'snakemake',
+        '--snakefile .Snakefile',
         f'--cores {args.cores}',
         '--config',
         f'input_table={args.input}',
@@ -84,10 +88,20 @@ def main():
     ])
     print(snakemake_runcommand)
     
-    if args.dry_run:
-        os.system(snakemake_runcommand + ' --dry-run')
-    else:    
-        os.system(snakemake_runcommand)
+    try:
+        Path('./.Snakefile').symlink_to(snakefile)
+    except:
+        if Path('./.Snakefile').exists():
+            Path('./.Snakefile').unlink()
+    
+    try:
+        if args.dry_run:
+            os.system(snakemake_runcommand + ' --dry-run')
+        else:    
+            os.system(snakemake_runcommand)
+    finally:
+        if Path('./.Snakefile').exists():
+            Path('./.Snakefile').unlink()
 
 
 if __name__ == "__main__":

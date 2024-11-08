@@ -1,3 +1,5 @@
 parsing_scripts
 testout
 testinput
+.snakemake
+logs
