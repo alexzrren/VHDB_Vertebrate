@@ -1,0 +1,89 @@
+host: GPD-PowerEdge-T640
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 16
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+bowtie2_mapping          2
+samtools_coverage        2
+summarize                2
+total                    7
+
+Select jobs to execute...
+Execute 2 jobs...
+
+[Fri Nov  8 16:42:17 2024]
+localrule bowtie2_mapping:
+    input: /home/renzirui/Projects/GZLab_ViromePipeline/HostIdentification/testdata/simulate_multibatch/Y23110000033853_head1M_r1.fq.gz, /home/renzirui/Projects/GZLab_ViromePipeline/HostIdentification/testdata/simulate_multibatch/Y23110000033853_head1M_r2.fq.gz
+    output: testout/1.sortedbam/chip_head1M_sorted.bam
+    log: logs/bowtie2_chip_head1M.log
+    jobid: 2
+    reason: Missing output files: testout/1.sortedbam/chip_head1M_sorted.bam
+    wildcards: sample_index=chip_head1M
+    threads: 4
+    resources: tmpdir=/tmp
+
+
+[Fri Nov  8 16:42:17 2024]
+localrule bowtie2_mapping:
+    input: /home/renzirui/Projects/GZLab_ViromePipeline/HostIdentification/testdata/simulate_multibatch/Y23110000033853_tail1M_r1.fq.gz, /home/renzirui/Projects/GZLab_ViromePipeline/HostIdentification/testdata/simulate_multibatch/Y23110000033853_tail1M_r2.fq.gz
+    output: testout/1.sortedbam/chip_tail1M_sorted.bam
+    log: logs/bowtie2_chip_tail1M.log
+    jobid: 4
+    reason: Missing output files: testout/1.sortedbam/chip_tail1M_sorted.bam
+    wildcards: sample_index=chip_tail1M
+    threads: 4
+    resources: tmpdir=/tmp
+
+[Fri Nov  8 16:42:39 2024]
+Finished job 2.
+1 of 7 steps (14%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Nov  8 16:42:39 2024]
+localrule samtools_coverage:
+    input: testout/1.sortedbam/chip_head1M_sorted.bam
+    output: testout/2.coverage/chip_head1M_coverage.txt
+    jobid: 1
+    reason: Missing output files: testout/2.coverage/chip_head1M_coverage.txt; Input files updated by another job: testout/1.sortedbam/chip_head1M_sorted.bam
+    wildcards: sample_index=chip_head1M
+    resources: tmpdir=/tmp
+
+[Fri Nov  8 16:42:39 2024]
+Finished job 1.
+2 of 7 steps (29%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Nov  8 16:42:39 2024]
+localrule summarize:
+    input: testout/2.coverage/chip_head1M_coverage.txt, testout/0.stats/chip_head1M.seqkit.stats.txt
+    output: testout/3.summary/chip_head1M_summary.csv
+    jobid: 7
+    reason: Missing output files: testout/3.summary/chip_head1M_summary.csv; Input files updated by another job: testout/2.coverage/chip_head1M_coverage.txt
+    wildcards: sample_index=chip_head1M
+    resources: tmpdir=/tmp
+
+[Fri Nov  8 16:42:39 2024]
+Error in rule summarize:
+    jobid: 7
+    input: testout/2.coverage/chip_head1M_coverage.txt, testout/0.stats/chip_head1M.seqkit.stats.txt
+    output: testout/3.summary/chip_head1M_summary.csv
+    shell:
+        
+        python /home/renzirui/VHDB_Vertebrate/scripts/summarize.py testout/2.coverage/chip_head1M_coverage.txt testout/0.stats/chip_head1M.seqkit.stats.txt /home/renzirui/VHDB_Vertebrate/db_file/vhdb_info.csv testout/3.summary/chip_head1M_summary.csv 8 
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Fri Nov  8 16:42:40 2024]
+Finished job 4.
+3 of 7 steps (43%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-11-08T164217.269945.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

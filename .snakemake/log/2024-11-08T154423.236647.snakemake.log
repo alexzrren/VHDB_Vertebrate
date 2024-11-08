@@ -1,0 +1,118 @@
+host: GPD-PowerEdge-T640
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 18
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+bowtie2_mapping          2
+samtools_coverage        2
+seqkit_stats             2
+total                    7
+
+Select jobs to execute...
+Execute 4 jobs...
+
+[Fri Nov  8 15:44:23 2024]
+localrule seqkit_stats:
+    input: /home/renzirui/Projects/GZLab_ViromePipeline/HostIdentification/testdata/simulate_multibatch/Y23110000033853_tail1M_r1.fq.gz, /home/renzirui/Projects/GZLab_ViromePipeline/HostIdentification/testdata/simulate_multibatch/Y23110000033853_tail1M_r2.fq.gz
+    output: testoutput/0.stats/chip_tail1M.seqkit.stats.txt
+    jobid: 6
+    reason: Missing output files: testoutput/0.stats/chip_tail1M.seqkit.stats.txt
+    wildcards: sample_index=chip_tail1M
+    threads: 2
+    resources: tmpdir=/tmp
+
+
+[Fri Nov  8 15:44:23 2024]
+localrule seqkit_stats:
+    input: /home/renzirui/Projects/GZLab_ViromePipeline/HostIdentification/testdata/simulate_multibatch/Y23110000033853_head1M_r1.fq.gz, /home/renzirui/Projects/GZLab_ViromePipeline/HostIdentification/testdata/simulate_multibatch/Y23110000033853_head1M_r2.fq.gz
+    output: testoutput/0.stats/chip_head1M.seqkit.stats.txt
+    jobid: 5
+    reason: Missing output files: testoutput/0.stats/chip_head1M.seqkit.stats.txt
+    wildcards: sample_index=chip_head1M
+    threads: 2
+    resources: tmpdir=/tmp
+
+
+[Fri Nov  8 15:44:23 2024]
+localrule bowtie2_mapping:
+    input: /home/renzirui/Projects/GZLab_ViromePipeline/HostIdentification/testdata/simulate_multibatch/Y23110000033853_head1M_r1.fq.gz, /home/renzirui/Projects/GZLab_ViromePipeline/HostIdentification/testdata/simulate_multibatch/Y23110000033853_head1M_r2.fq.gz
+    output: testoutput/1.sortedbam/chip_head1M_sorted.bam
+    log: logs/bowtie2_chip_head1M.log
+    jobid: 2
+    reason: Missing output files: testoutput/1.sortedbam/chip_head1M_sorted.bam
+    wildcards: sample_index=chip_head1M
+    threads: 4
+    resources: tmpdir=/tmp
+
+
+[Fri Nov  8 15:44:23 2024]
+localrule bowtie2_mapping:
+    input: /home/renzirui/Projects/GZLab_ViromePipeline/HostIdentification/testdata/simulate_multibatch/Y23110000033853_tail1M_r1.fq.gz, /home/renzirui/Projects/GZLab_ViromePipeline/HostIdentification/testdata/simulate_multibatch/Y23110000033853_tail1M_r2.fq.gz
+    output: testoutput/1.sortedbam/chip_tail1M_sorted.bam
+    log: logs/bowtie2_chip_tail1M.log
+    jobid: 4
+    reason: Missing output files: testoutput/1.sortedbam/chip_tail1M_sorted.bam
+    wildcards: sample_index=chip_tail1M
+    threads: 4
+    resources: tmpdir=/tmp
+
+[Fri Nov  8 15:44:25 2024]
+Finished job 6.
+1 of 7 steps (14%) done
+[Fri Nov  8 15:44:25 2024]
+Finished job 5.
+2 of 7 steps (29%) done
+[Fri Nov  8 15:44:45 2024]
+Finished job 2.
+3 of 7 steps (43%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Nov  8 15:44:45 2024]
+localrule samtools_coverage:
+    input: testoutput/1.sortedbam/chip_head1M_sorted.bam
+    output: testoutput/2.coverage/chip_head1M_coverage.txt
+    jobid: 1
+    reason: Missing output files: testoutput/2.coverage/chip_head1M_coverage.txt; Input files updated by another job: testoutput/1.sortedbam/chip_head1M_sorted.bam
+    wildcards: sample_index=chip_head1M
+    resources: tmpdir=/tmp
+
+[Fri Nov  8 15:44:45 2024]
+Finished job 1.
+4 of 7 steps (57%) done
+[Fri Nov  8 15:44:47 2024]
+Finished job 4.
+5 of 7 steps (71%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Nov  8 15:44:47 2024]
+localrule samtools_coverage:
+    input: testoutput/1.sortedbam/chip_tail1M_sorted.bam
+    output: testoutput/2.coverage/chip_tail1M_coverage.txt
+    jobid: 3
+    reason: Missing output files: testoutput/2.coverage/chip_tail1M_coverage.txt; Input files updated by another job: testoutput/1.sortedbam/chip_tail1M_sorted.bam
+    wildcards: sample_index=chip_tail1M
+    resources: tmpdir=/tmp
+
+[Fri Nov  8 15:44:47 2024]
+Finished job 3.
+6 of 7 steps (86%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Nov  8 15:44:47 2024]
+localrule all:
+    input: testoutput/2.coverage/chip_head1M_coverage.txt, testoutput/2.coverage/chip_tail1M_coverage.txt, testoutput/0.stats/chip_head1M.seqkit.stats.txt, testoutput/0.stats/chip_tail1M.seqkit.stats.txt
+    jobid: 0
+    reason: Input files updated by another job: testoutput/2.coverage/chip_head1M_coverage.txt, testoutput/0.stats/chip_tail1M.seqkit.stats.txt, testoutput/0.stats/chip_head1M.seqkit.stats.txt, testoutput/2.coverage/chip_tail1M_coverage.txt
+    resources: tmpdir=/tmp
+
+[Fri Nov  8 15:44:47 2024]
+Finished job 0.
+7 of 7 steps (100%) done
+Complete log: .snakemake/log/2024-11-08T154423.236647.snakemake.log
