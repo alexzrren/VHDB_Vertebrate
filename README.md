@@ -2,6 +2,7 @@
 
 ``````
 conda create environment.yaml
+conda activate mapping_vertvirus
 ``````
 
 用法
